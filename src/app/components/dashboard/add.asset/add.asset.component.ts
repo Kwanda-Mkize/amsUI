@@ -1,26 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AssetService } from '../../services/assetService/asset.service';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from "@angular/core";
+// import { AssetService } from "../../services/assetService/asset.service";
+import { AssetService } from "../../../services/assetService/asset.service";
+import { CommonModule } from "@angular/common";
 import {
   FormArray,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-} from '@angular/forms';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { ICategory } from '../../shared/interfaces/Icategory';
-import { ILocation } from '../../shared/interfaces/Ilocation';
-import { IBrand } from '../../shared/interfaces/Ibrand';
-import { IFeature, IFeature_ALT } from '../../shared/interfaces/Ifeature';
-import { AssetFormServiceService } from '../../services/assetFormService/asset-form-service.service';
-import { IAsset } from '../../shared/interfaces/IAssetData';
+} from "@angular/forms";
+import { Observable, Subject, takeUntil } from "rxjs";
+
+import { ICategory } from "../../../shared/interfaces/Icategory";
+import { ILocation } from "../../../shared/interfaces/Ilocation";
+import { IBrand } from "../../../shared/interfaces/Ibrand";
+import { IFeature, IFeature_ALT } from "../../../shared/interfaces/Ifeature";
+import { AssetFormServiceService } from "../../../services/assetFormService/asset-form-service.service";
+import { IAsset } from "../../../shared/interfaces/IAssetData";
 @Component({
-  selector: 'app-add.asset',
+  selector: "app-add.asset",
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './add.asset.component.html',
-  styleUrl: './add.asset.component.css',
+  templateUrl: "./add.asset.component.html",
+  styleUrl: "./add.asset.component.css",
 })
 export class AddAssetComponent implements OnInit {
   categoryList: ICategory[] = [];
@@ -39,7 +41,7 @@ export class AddAssetComponent implements OnInit {
   service = inject(AssetService);
   formService = inject(AssetFormServiceService);
 
-  categoryControl = new FormControl('');
+  categoryControl = new FormControl("");
   ngOnInit(): void {
     this.AddAssetForm = this.formService.CreateAssetForm();
 
@@ -80,7 +82,7 @@ export class AddAssetComponent implements OnInit {
   }
 
   get assetAttributes(): FormArray {
-    return this.AddAssetForm.get('assetAttributes') as FormArray;
+    return this.AddAssetForm.get("assetAttributes") as FormArray;
   }
 
   onAddFeature() {
@@ -105,10 +107,10 @@ export class AddAssetComponent implements OnInit {
       this.assetData = this.AddAssetForm.value;
       this.service.addNewAsset(this.assetData).subscribe({
         next: (res) => {
-          console.log('Asset added successfully:', res);
+          console.log("Asset added successfully:", res);
         },
         error: (err) => {
-          console.error('Failed to add asset:', err);
+          console.error("Failed to add asset:", err);
         },
       });
     }

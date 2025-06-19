@@ -1,0 +1,79 @@
+mat-toolbar {
+  color: white;
+}
+
+.content {
+  padding: 20px;
+}
+.logo {
+  width: 5rem;
+  height: 5rem;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.side-nav-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  font-weight: 400;
+}
+.dashboard-title-container {
+  color: rgb(156, 156, 156);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.dashboard-title {
+  margin-bottom: 0;
+  color: #3b883e;
+}
+.dashboard-icon {
+  width: 2rem;
+}
+
+.profile-container {
+  padding-left: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.profile-creds {
+}
+
+.employee-name {
+  margin: 0;
+  font-size: large;
+  font-weight: 500;
+}
+.employee-email {
+  margin: 0;
+  font-size: medium;
+  font-weight: 300;
+}
+.profile-icon {
+  width: 5rem;
+  margin: 0;
+  height: 5rem;
+  background-color: #3b883e;
+  border-radius: 100%;
+}
+
+.username {
+  font-weight: 500;
+}
+
+.useremail {
+  font-weight: 300;
+  font-size: small;
+}
+
+.last-menu-item {
+  margin-top: 18rem;
+  border: none;
+  background-color: transparent;
+}
