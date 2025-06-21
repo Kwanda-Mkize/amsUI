@@ -1,48 +1,57 @@
-mat-toolbar {
-  color: white;
-}
-
-.content {
-  padding: 20px;
-}
 .logo {
   width: 5rem;
-  height: 5rem;
-  margin-left: 1rem;
-  margin-top: 1rem;
+}
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.side-nav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.top-section {
+  padding: 16px;
+}
+
+.menu-section {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 16px;
 }
 
 .side-nav-list {
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   padding: 1rem;
   font-weight: 400;
 }
+
+/****Containers****/
 .dashboard-title-container {
   color: rgb(156, 156, 156);
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.dashboard-title {
-  margin-bottom: 0;
-  color: #3b883e;
-}
-.dashboard-icon {
-  width: 2rem;
-}
-
 .profile-container {
-  padding-left: 1rem;
-  padding-top: 2rem;
+  padding-top: 3rem;
   padding-bottom: 4rem;
   display: flex;
   gap: 1rem;
   align-items: center;
 }
-.profile-creds {
+
+/****Text Styles****/
+.dashboard-title {
+  margin: 0;
+  color: #3b883e;
 }
 
 .employee-name {
@@ -55,31 +64,45 @@ mat-toolbar {
   font-size: medium;
   font-weight: 300;
 }
-.profile-icon {
-  width: 5rem;
-  margin: 0;
-  height: 5rem;
-  background-color: #3b883e;
-  border-radius: 100%;
-}
-
-.username {
-  font-weight: 500;
-}
 
 .useremail {
   font-weight: 300;
   font-size: small;
 }
 
-.last-menu-item {
-  margin-top: 18rem;
+/****Button Styles****/
+.menu-logout-btn {
+  padding-bottom: 4rem;
+  padding-left: 2rem;
+}
+
+.logout-btn {
+  font-size: larger;
   border: none;
   background-color: transparent;
 }
 
-.side-bar {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+.nav-button {
+  width: 15rem;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 12px;
+  background-color: transparent;
+}
+.nav-button:hover {
+  background-color: #13c86728;
+}
+
+/****Icon Styles****/
+.dashboard-icon {
+  width: 2rem;
+}
+
+.profile-icon {
+  width: 5rem;
+  margin: 0;
+  height: 5rem;
+  padding: 0.5rem;
+  background-color: #d5d8d6;
+  border-radius: 100%;
 }

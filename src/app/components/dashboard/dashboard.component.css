@@ -1,16 +1,7 @@
 .main-container {
   height: 100vh;
-  display: flex;
-}
-mat-sidenav {
-  width: 350px;
-  background-color: white;
-  border: 1px solid rgba(73, 72, 72, 0.151);
-  height: 100%;
-}
-mat-sidenav-content {
-  padding: 20px;
-  flex-grow: 1;
-  overflow: auto;
   background-color: #f3f4f8;
+}
+.side-bar {
+  width: 350px;
 }
