@@ -21,28 +21,13 @@
 
   <div class="menu-section">
     <ul class="side-nav-list">
-      <li>
-        <button class="d-flex align-items-center gap-2 nav-button">
-          <img src="/icons/manage-asset-icon.png" alt="" />
-          Manage Assets
-        </button>
-      </li>
-      <li>
-        <button class="d-flex align-items-center gap-2 nav-button">
-          <img src="/icons/Assign-asset-icon.png" alt="" />
-          Assign Asset
-        </button>
-      </li>
-      <li>
-        <button class="d-flex align-items-center gap-2 nav-button">
-          <img src="/icons/view-request-icon.png" alt="" />
-          View Requests
-        </button>
-      </li>
-      <li>
-        <button class="d-flex align-items-center gap-2 nav-button">
-          <img src="/icons/view-repairs-icon.png" alt="" />
-          Repair Requests
+      <li *ngFor="let item of navItemList">
+        <button
+          class="d-flex align-items-center gap-2 nav-button"
+          (click)="onNavChange(item.routePath)"
+        >
+          <img src="{{ item.icon }}" alt="" />
+          {{ item.item }}
         </button>
       </li>
     </ul>

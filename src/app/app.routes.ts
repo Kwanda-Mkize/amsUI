@@ -2,11 +2,12 @@ import { Routes } from "@angular/router";
 // import { AddAssetComponent } from "./components/add.asset/add.asset.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { AddAssetComponent } from "./components/dashboard/add.asset/add.asset.component";
+import { SsoLoginComponent } from "./components/sso-login/sso-login.component";
 
 export const routes: Routes = [
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "login",
     pathMatch: "full",
   },
   {
@@ -23,5 +24,9 @@ export const routes: Routes = [
         component: AddAssetComponent,
       },
     ],
+  },
+  {
+    path: "login",
+    component: SsoLoginComponent,
   },
 ];
