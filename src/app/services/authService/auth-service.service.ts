@@ -15,7 +15,7 @@ export class AuthServiceService {
   private readonly authConfig = useAuth();
   http = inject(HttpClient);
   url = environment.baseUrl;
-  wireUrl = environment.wireMockUrl;
+  
 
   token: string | null = null;
   account: AccountInfo | null = null;
@@ -28,7 +28,7 @@ export class AuthServiceService {
       if (result) {
         this.account = result.account!;
         this.token = result.accessToken;
-        sessionStorage.setItem("Token", "kwanda.token");
+        sessionStorage.setItem("Token", `${this.token});
 
         this.setUser(this.account);
         this.setEmail(this.account);
@@ -54,7 +54,7 @@ export class AuthServiceService {
   }
 
   login(): Observable<any> {
-    return this.http.post(`${this.wireUrl}/auth`, null);
+    return this.http.post(`${this.url}/auth/validate`, null);
   }
 
   setUser(user: AccountInfo): void {
