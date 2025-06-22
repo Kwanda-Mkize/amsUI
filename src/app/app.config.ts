@@ -20,12 +20,13 @@ import {
   msalInterceptorConfig,
   msalGuardConfig,
 } from "./msal.config";
+import { AuthInterceptorService } from "./services/interceptor/auth-interceptor.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([AuthInterceptorService])),
     provideAnimationsAsync(),
     importProvidersFrom(
       MsalModule.forRoot(msalInstance, msalGuardConfig, msalInterceptorConfig)

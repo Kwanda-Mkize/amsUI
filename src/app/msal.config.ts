@@ -12,7 +12,7 @@ export const msalInstance = new PublicClientApplication({
     redirectUri: "http://localhost:4200",
   },
   cache: {
-    cacheLocation: "localStorage",
+    cacheLocation: "sessionStorage",
     storeAuthStateInCookie: false,
   },
 });
