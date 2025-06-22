@@ -81,8 +81,8 @@ export class AssignAssetComponent implements OnInit {
     this.selectedCategories = [];
     this.selectedCountry = '';
     this.selectedCity = '';
-    this.filteredAssets = this.assets.slice(0, 2);
     this.showAllAssets = false;
+    this.filteredAssets = this.assets.slice(0, 2);
   }
 
   toggleFilter(): void {
@@ -116,16 +116,23 @@ export class AssignAssetComponent implements OnInit {
     this.filteredAssets = this.showAllAssets ? result : result.slice(0, 2);
   }
 
-  seeMoreAssets(): void {
-    this.filteredAssets = this.assets;
-    this.showAllAssets = true;
+  toggleSeeAssets(): void {
+    this.showAllAssets = !this.showAllAssets;
+
+    // Apply current search filter and limit or show all
+    const filtered = this.assets.filter(asset =>
+      asset.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+
+    this.filteredAssets = this.showAllAssets ? filtered : filtered.slice(0, 2);
   }
 
   applyFilters(): void {
-    this.filteredAssets = this.assets.filter(asset => {
+    const filtered = this.assets.filter(asset => {
       const matchCategory =
         this.selectedCategories.length === 0 ||
         this.selectedCategories.includes(asset.category);
+
       const matchLocation =
         (!this.selectedCountry || asset.location.country === this.selectedCountry) &&
         (!this.selectedCity || asset.location.city === this.selectedCity);
@@ -133,9 +140,7 @@ export class AssignAssetComponent implements OnInit {
       return matchCategory && matchLocation;
     });
 
-    if (!this.showAllAssets) {
-      this.filteredAssets = this.filteredAssets.slice(0, 2);
-    }
+    this.filteredAssets = this.showAllAssets ? filtered : filtered.slice(0, 2);
   }
 
   clearFilters(): void {
@@ -144,5 +149,20 @@ export class AssignAssetComponent implements OnInit {
     this.selectedCategories = [];
     this.applyFilters();
   }
+
+  assignAsset1(): void {
+  console.log('Employee Name:', this.employeeName);
+  console.log('Employee Email:', this.employeeEmail);
+  console.log('Selected Country:', this.selectedCountry);
+  console.log('Selected City:', this.selectedCity);
+  console.log('Selected Asset ID:', this.selectedAssetId);
+
+  if (this.selectedAssetId !== null && this.employeeName && this.employeeEmail) {
+    this.toastr.success('Asset assigned successfully!');
+  } else {
+    this.toastr.error('Please fill all fields and select an asset.');
+  }
 }
+}
+
 

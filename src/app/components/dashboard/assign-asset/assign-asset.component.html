@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container ">
   <h3 class="assign-heading">Assign Asset</h3>
 
   <!-- Form Inputs -->
@@ -91,28 +91,45 @@
 
 
   <!-- Filtered Asset Cards -->
-  <div style="max-height: 300px; overflow-y: auto;" class="border p-3 mb-2">
-    <div
-      *ngFor="let asset of filteredAssets"
-      (click)="selectAsset(asset.id)"
-      class="card p-3 mb-2 asset-card"
-      [ngClass]="{ 'asset-card--selected': selectedAssetId === asset.id }"
-      role="button"
-      tabindex="0"
-    >
-      <strong>{{ asset.name }}</strong>
-      <p class="mb-0 text-muted">RAM: {{ asset.ram }}</p>
-      <p class="mb-0 text-muted">Processor: {{ asset.processor }}</p>
-      <p class="mb-0 text-muted">Hard Drive: {{ asset.hardDrive }}</p>
-    </div>
-    <a *ngIf="!showAllAssets" href="#" (click)="seeMoreAssets()">See all assets</a>
-  </div>
+  
+<div style="width: 1007px; border-radius: 10px;" class="border p-3 mb-1">
+  <strong class="mb-4 section-title">Available Assets</strong>
 
-  <!-- Footer Buttons -->
-  <div class="d-flex gap-3">
-    <button class="btn btn-success" (click)="assignAsset()">Assign Asset</button>
-    <a href="#" (click)="clearForm()" class="align-self-center">Clear</a>
+  <div class="d-flex flex-column align-items-center">
+  <div
+    *ngFor="let asset of filteredAssets"
+    (click)="selectAsset(asset.id)"
+    class="card p-3 mb-4 asset-card"
+    [ngClass]="{ 'asset-card--selected': selectedAssetId === asset.id }"
+    role="button"
+    tabindex="0"
+  >
+    <strong class="mb-3">{{ asset.name }}</strong>
+    <p class="mb-0 text-muted">RAM: {{ asset.ram }}</p>
+    <p class="mb-0 text-muted">Processor: {{ asset.processor }}</p>
+    <p class="mb-0 text-muted">Hard Drive: {{ asset.hardDrive }}</p>
   </div>
 </div>
+
+  <!-- Centered Link -->
+  <div class="d-flex justify-content-center mt-1">
+  <button
+    class="btn btn-link p-0"
+    style="color: #3B883E; text-decoration: underline;"
+    (click)="toggleSeeAssets()"
+    type="button"
+  >
+    {{ showAllAssets ? 'See less assets' : 'See all assets' }}
+  </button>
+</div>
+
+
+</div>
+  <!-- Footer Buttons -->
+  <div class="d-flex gap-5 mt-5 mb-4">
+  <button class="btn btn-success" (click)="assignAsset1()">Assign Asset</button>
+  <button (click)="clearForm()" type="button" class="text-clear-btn align-self-center">Clear</button>
+</div>
+
 
 
