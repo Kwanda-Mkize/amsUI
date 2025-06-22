@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 // import { AddAssetComponent } from "./components/add.asset/add.asset.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { AddAssetComponent } from "./components/dashboard/add.asset/add.asset.component";
+import { AssignAssetComponent } from './components/dashboard/assign-asset/assign-asset.component';
 
 export const routes: Routes = [
   {
@@ -15,12 +16,16 @@ export const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "add-asset",
+        redirectTo: "assign-asset",
         pathMatch: "full",
       },
       {
         path: "add-asset",
         component: AddAssetComponent,
+      },
+      {
+        path: "assign-asset",
+        component: AssignAssetComponent,
       },
     ],
   },

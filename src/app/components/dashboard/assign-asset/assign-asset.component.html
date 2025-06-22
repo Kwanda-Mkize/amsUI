@@ -1,1 +1,118 @@
-<p>assign-asset works!</p>
+<div class="container">
+  <h3 class="assign-heading">Assign Asset</h3>
+
+  <!-- Form Inputs -->
+  <div class="row mb-5 assign-form">
+    <div class="col-md-6">
+      <label class="assign-form__label">Employee Name</label>
+      <input class="form-control assign-form__input" [(ngModel)]="employeeName" placeholder="Enter employee name" />
+    </div>
+    <div class="col-md-6">
+      <label class="assign-form__label">Employee Email</label>
+      <input class="form-control assign-form__input" [(ngModel)]="employeeEmail" placeholder="Enter employee email" />
+    </div>
+    <div class="col-md-6 mt-2">
+  <label class="assign-form__label">Country/Region</label>
+  <select class="form-control assign-form__input"
+          [(ngModel)]="selectedCountry"
+          (change)="onCountryChange()">
+    <option value="" disabled selected>Select country</option>
+    <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+  </select>
+</div>
+    <div class="col-md-6 mt-2">
+  <label class="assign-form__label">City</label>
+  <select class="form-control assign-form__input"
+          [(ngModel)]="selectedCity"
+          [disabled]="!selectedCountry">
+    <option value="" disabled selected>Select city</option>
+    <option *ngFor="let city of citiesByCountry[selectedCountry]" [value]="city">{{ city }}</option>
+  </select>
+</div>
+  </div>
+
+  <!-- Search Bar + Filter Button -->
+  <div class="asset-search-bar">
+    <div class="search-input-wrapper">
+      <input
+        class="form-control asset-search-bar__input"
+        [(ngModel)]="searchTerm"
+        (input)="searchAssets()"
+        placeholder="Search asset by name"
+      />
+      <button class="search-icon-btn" (click)="searchAssets()" aria-label="Search">
+        <img src="searchIconForSearchBar.png" alt="SearchIcon" width="22px" height="22px" />
+      </button>
+    </div>
+    <button class="filter-btn" (click)="toggleFilter()" aria-label="Toggle filter">
+      <img src="filterAssignAssets.png" alt="Filter" width="20" height="20" />
+    </button>
+  </div>
+
+  <!-- Slideout Filter Panel -->
+<div class="filter-overlay" *ngIf="showFilter" (click)="toggleFilter()"></div>
+
+<div class="filter-slideout" [class.show]="showFilter">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="m-0">Filter Assets</h5>
+    <button class="btn btn-sm btn-outline-secondary" (click)="toggleFilter()">✕</button>
+  </div>
+
+  <strong class="section-title">ASSET CATEGORY</strong>
+  <div class="form-check" *ngFor="let cat of assetCategories">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      [checked]="isCategoryChecked(cat)"
+      (change)="toggleCategory(cat)"
+    />
+    <label class="form-check-label">{{ cat }}</label>
+  </div>
+
+  <div class="mt-4">
+    <strong class="section-title">LOCATION</strong>
+
+    <label class="label-small">Country/Region</label>
+    <select class="form-select" [(ngModel)]="selectedCountry" (change)="onCountryChange()">
+      <option value="">Select Country</option>
+      <option *ngFor="let country of countries">{{ country }}</option>
+    </select>
+
+    <label class="label-small mt-3">City</label>
+    <select class="form-select" [(ngModel)]="selectedCity">
+      <option value="">Select City</option>
+      <option *ngFor="let city of citiesByCountry[selectedCountry]">{{ city }}</option>
+    </select>
+  </div>
+
+  <button class="apply-btn mt-4" (click)="applyFilters()">Apply Filters</button>
+  <button class="clear-btn mt-2" (click)="clearFilters()">Clear Filters</button>
+</div>
+
+
+  <!-- Filtered Asset Cards -->
+  <div style="max-height: 300px; overflow-y: auto;" class="border p-3 mb-2">
+    <div
+      *ngFor="let asset of filteredAssets"
+      (click)="selectAsset(asset.id)"
+      class="card p-3 mb-2 asset-card"
+      [ngClass]="{ 'asset-card--selected': selectedAssetId === asset.id }"
+      role="button"
+      tabindex="0"
+    >
+      <strong>{{ asset.name }}</strong>
+      <p class="mb-0 text-muted">RAM: {{ asset.ram }}</p>
+      <p class="mb-0 text-muted">Processor: {{ asset.processor }}</p>
+      <p class="mb-0 text-muted">Hard Drive: {{ asset.hardDrive }}</p>
+    </div>
+    <a *ngIf="!showAllAssets" href="#" (click)="seeMoreAssets()">See all assets</a>
+  </div>
+
+  <!-- Footer Buttons -->
+  <div class="d-flex gap-3">
+    <button class="btn btn-success" (click)="assignAsset()">Assign Asset</button>
+    <a href="#" (click)="clearForm()" class="align-self-center">Clear</a>
+  </div>
+</div>
+
+
