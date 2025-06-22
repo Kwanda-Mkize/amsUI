@@ -27,8 +27,13 @@ export class AssignAssetComponent implements OnInit {
   selectedCity = '';
   searchTerm = '';
   selectedAssetId: number | null = null;
+  errorMessage: string = '';
   showFilter = false;
   showAllAssets = false;
+
+  isProcessing = false;
+  showSuccessModal = false;
+  showErrorModal = false;
 
   assets: Asset[] = [];
   filteredAssets: Asset[] = [];
@@ -66,11 +71,49 @@ export class AssignAssetComponent implements OnInit {
   }
 
   assignAsset(): void {
-    if (this.selectedAssetId !== null && this.employeeName && this.employeeEmail) {
-      this.toastr.success('Asset assigned successfully!');
-    } else {
-      this.toastr.error('Please fill all fields and select an asset.');
-    }
+  if (this.selectedAssetId !== null && this.employeeName && this.employeeEmail) {
+    this.isProcessing = true;
+    this.showFilter = false;
+
+    const payload = {
+      assetId: 'b03cf1d2-a06f-4ffb-b0b8-91125304c245',
+      adminId: 'e18c83b6-dc34-4e30-8651-20f1fa5ef412',
+      employeeId: 'ab342b27-8e1a-4f4f-92f7-8ef8417f965e'
+    };
+
+    this.assetService.assignAsset(payload).subscribe({
+      next: (res) => {
+        console.log('✅ Asset assigned:', res);
+        this.isProcessing = false;
+        this.showSuccessModal = true;
+      },
+      error: (err) => {
+        console.error('❌ Error assigning asset:', err);
+        this.isProcessing = false;
+        this.errorMessage = err?.error?.message || 'Assignment failed.';
+        this.showErrorModal = true;
+      }
+    });
+
+  } else {
+    this.errorMessage = 'Please fill all required fields';
+    this.showErrorModal = true;
+  }
+}
+
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+    this.clearForm();
+  }
+
+  backToForm(): void {
+    this.showErrorModal = false;
+  }
+
+  retryAssign(): void {
+    this.showErrorModal = false;
+    this.assignAsset();
   }
 
   clearForm(): void {
@@ -86,7 +129,9 @@ export class AssignAssetComponent implements OnInit {
   }
 
   toggleFilter(): void {
-    this.showFilter = !this.showFilter;
+    if (!this.isProcessing && !this.showSuccessModal && !this.showErrorModal) {
+      this.showFilter = !this.showFilter;
+    }
   }
 
   isCategoryChecked(cat: string): boolean {
@@ -119,7 +164,6 @@ export class AssignAssetComponent implements OnInit {
   toggleSeeAssets(): void {
     this.showAllAssets = !this.showAllAssets;
 
-    // Apply current search filter and limit or show all
     const filtered = this.assets.filter(asset =>
       asset.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
@@ -149,20 +193,8 @@ export class AssignAssetComponent implements OnInit {
     this.selectedCategories = [];
     this.applyFilters();
   }
-
-  assignAsset1(): void {
-  console.log('Employee Name:', this.employeeName);
-  console.log('Employee Email:', this.employeeEmail);
-  console.log('Selected Country:', this.selectedCountry);
-  console.log('Selected City:', this.selectedCity);
-  console.log('Selected Asset ID:', this.selectedAssetId);
-
-  if (this.selectedAssetId !== null && this.employeeName && this.employeeEmail) {
-    this.toastr.success('Asset assigned successfully!');
-  } else {
-    this.toastr.error('Please fill all fields and select an asset.');
-  }
 }
-}
+
+
 
 
