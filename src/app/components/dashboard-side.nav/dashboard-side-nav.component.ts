@@ -4,6 +4,7 @@ import { navItems } from "../../shared/navItems";
 import { INavMenu } from "../../shared/interfaces/NavMenu";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
+import { AuthServiceService } from "../../services/authService/auth-service.service";
 
 @Component({
   selector: "app-dashboard-side-nav",
@@ -14,6 +15,7 @@ import { Router } from "@angular/router";
 })
 export class DashboardSideNavComponent implements OnInit {
   router = inject(Router);
+  authService = inject(AuthServiceService);
   navItemList: INavMenu[] = [];
   name? = "";
   email? = "";
@@ -29,5 +31,9 @@ export class DashboardSideNavComponent implements OnInit {
     if (navItemPath) {
       this.router.navigateByUrl(navItemPath);
     }
+  }
+
+  logout() {
+    this.authService.logoutRedirect();
   }
 }

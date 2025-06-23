@@ -14,25 +14,26 @@ export class AuthServiceService {
   private router = inject(Router);
   private readonly authConfig = useAuth();
   http = inject(HttpClient);
+
+  microsoftAccount = this.authConfig.account;
+  microsoftToken = this.authConfig.token;
+
   url = environment.baseUrl;
   wireUrl = environment.wireMockUrl;
 
-  token: string | null = null;
-  account: AccountInfo | null = null;
-
   async handleRedirectLogin(): Promise<void> {
     try {
-      const result: AuthenticationResult | null =
+      const authenticated: AuthenticationResult | null =
         await this.authConfig.msalInstance.handleRedirectPromise();
 
-      if (result) {
-        this.account = result.account!;
-        this.token = result.accessToken;
-        sessionStorage.setItem("Token", "kwanda.token");
+      if (authenticated) {
+        this.microsoftAccount = authenticated.account!;
+        this.microsoftToken = authenticated.accessToken;
 
-        this.setUser(this.account);
-        this.setEmail(this.account);
-
+        sessionStorage.setItem("Token", `${this.microsoftToken}`);
+        this.setUser(this.microsoftAccount);
+        this.setEmail(this.microsoftAccount);
+        // console.log(sessionStorage.getItem());
         this.login().subscribe({
           next: (res) => {
             console.log("Sent token successfully:", res);
@@ -54,25 +55,21 @@ export class AuthServiceService {
   }
 
   login(): Observable<any> {
-    return this.http.post(`${this.wireUrl}/auth`, null);
+    return this.http.post(`${this.url}/auth`, null);
   }
 
-  setUser(user: AccountInfo): void {
-    localStorage.setItem("userName", user.name ?? "");
+  setUser(microsoftAccount: AccountInfo): void {
+    localStorage.setItem("userName", microsoftAccount.name ?? "");
   }
 
-  setEmail(user: AccountInfo): void {
-    localStorage.setItem("Email", user.username);
+  setEmail(microsoftAccount: AccountInfo): void {
+    localStorage.setItem("Email", microsoftAccount.username);
   }
 
-  logoutRedirect() {
+  logoutRedirect(): void {
+    localStorage.clear();
     this.authConfig.msalInstance.logoutRedirect({
       postLogoutRedirectUri: window.location.origin,
     });
-  }
-
-  logoutUser(): void {
-    localStorage.clear();
-    this.authConfig.msalInstance.logoutRedirect();
   }
 }

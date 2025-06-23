@@ -1,7 +1,7 @@
 import { AccountInfo } from "@azure/msal-browser";
 import { msalInstance } from "./msal.config";
 
-const authData = {
+export const authData = {
   msalInstance,
   account: null as AccountInfo | null,
   token: "",
