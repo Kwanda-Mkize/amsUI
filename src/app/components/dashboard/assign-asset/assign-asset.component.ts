@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
+
 import { Asset } from './asset.model';
 import { AssignAssetService } from './assign-asset.service';
 
@@ -11,39 +12,34 @@ import { AssignAssetService } from './assign-asset.service';
   standalone: true,
   templateUrl: './assign-asset.component.html',
   styleUrls: ['./assign-asset.component.css'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    ToastrModule
-  ]
+  imports: [CommonModule, FormsModule, HttpClientModule, ToastrModule]
 })
 export class AssignAssetComponent implements OnInit {
+
   employeeName = '';
   employeeEmail = '';
-  country = '';
-  city = '';
+  selectedAssetId: number | null = null;
+
+  searchTerm = '';
+  selectedCategories: string[] = [];
   selectedCountry = '';
   selectedCity = '';
-  searchTerm = '';
-  selectedAssetId: number | null = null;
-  errorMessage: string = '';
+
   showFilter = false;
   showAllAssets = false;
-
   isProcessing = false;
   showSuccessModal = false;
   showErrorModal = false;
+  errorMessage = '';
 
   assets: Asset[] = [];
   filteredAssets: Asset[] = [];
 
-  assetCategories: string[] = ['Laptop', 'Headphones', 'Mouse', 'Monitor', 'Router'];
+  assetCategories = ['Laptop', 'Headphones', 'Mouse', 'Monitor', 'Router'];
   allAssetCategories: string[] = [];
-  selectedCategories: string[] = [];
 
-  countries: string[] = ['South Africa', 'India', 'United Kingdom'];
-  citiesByCountry: { [key: string]: string[] } = {
+  countries = ['South Africa', 'India', 'United Kingdom'];
+  citiesByCountry: Record<string, string[]> = {
     'South Africa': ['Johannesburg'],
     'India': ['Pune', 'Hyderabad', 'Bhopal', 'Chhattisgarh'],
     'United Kingdom': ['Grazeley']
@@ -71,36 +67,47 @@ export class AssignAssetComponent implements OnInit {
   }
 
   assignAsset(): void {
-  if (this.selectedAssetId !== null && this.employeeName && this.employeeEmail) {
+    if (!this.selectedAssetId || !this.employeeName || !this.employeeEmail) {
+      this.errorMessage = 'Please fill all required fields';
+      this.showErrorModal = true;
+      return;
+    }
+
     this.isProcessing = true;
     this.showFilter = false;
 
     const payload = {
-      assetId: 'b03cf1d2-a06f-4ffb-b0b8-91125304c245',
-      adminId: 'e18c83b6-dc34-4e30-8651-20f1fa5ef412',
-      employeeId: 'ab342b27-8e1a-4f4f-92f7-8ef8417f965e'
+      assetId: '8EEA0403-221C-4540-A00F-69FBEC4ED635',
+      adminId: '33333333-3333-3333-3333-333333333333',
+      employeeId: 'CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC'
     };
 
     this.assetService.assignAsset(payload).subscribe({
       next: (res) => {
-        console.log('✅ Asset assigned:', res);
+        console.log('Asset assigned:', res);
         this.isProcessing = false;
         this.showSuccessModal = true;
       },
       error: (err) => {
-        console.error('❌ Error assigning asset:', err);
+        console.error('Error assigning asset:', err);
         this.isProcessing = false;
         this.errorMessage = err?.error?.message || 'Assignment failed.';
         this.showErrorModal = true;
       }
     });
-
-  } else {
-    this.errorMessage = 'Please fill all required fields';
-    this.showErrorModal = true;
   }
-}
 
+  clearForm(): void {
+    this.employeeName = '';
+    this.employeeEmail = '';
+    this.selectedAssetId = null;
+    this.searchTerm = '';
+    this.selectedCategories = [];
+    this.selectedCountry = '';
+    this.selectedCity = '';
+    this.showAllAssets = false;
+    this.filteredAssets = this.assets.slice(0, 2);
+  }
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
@@ -116,42 +123,50 @@ export class AssignAssetComponent implements OnInit {
     this.assignAsset();
   }
 
-  clearForm(): void {
-    this.employeeName = '';
-    this.employeeEmail = '';
-    this.selectedAssetId = null;
-    this.searchTerm = '';
-    this.selectedCategories = [];
-    this.selectedCountry = '';
-    this.selectedCity = '';
-    this.showAllAssets = false;
-    this.filteredAssets = this.assets.slice(0, 2);
-  }
-
   toggleFilter(): void {
     if (!this.isProcessing && !this.showSuccessModal && !this.showErrorModal) {
       this.showFilter = !this.showFilter;
     }
   }
 
-  isCategoryChecked(cat: string): boolean {
-    return this.selectedCategories.includes(cat);
+  onCountryChange(): void {
+    this.selectedCity = '';
   }
 
-  toggleCategory(cat: string): void {
-    if (cat === 'All') {
+  isCategoryChecked(category: string): boolean {
+    return this.selectedCategories.includes(category);
+  }
+
+  toggleCategory(category: string): void {
+    if (category === 'All') {
       this.selectedCategories = [];
     } else {
-      if (this.isCategoryChecked(cat)) {
-        this.selectedCategories = this.selectedCategories.filter(c => c !== cat);
-      } else {
-        this.selectedCategories.push(cat);
-      }
+      this.selectedCategories = this.isCategoryChecked(category)
+        ? this.selectedCategories.filter(c => c !== category)
+        : [...this.selectedCategories, category];
     }
   }
 
-  onCountryChange(): void {
+  clearFilters(): void {
+    this.selectedCountry = '';
     this.selectedCity = '';
+    this.selectedCategories = [];
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    const filtered = this.assets.filter(asset => {
+      const matchCategory = !this.selectedCategories.length ||
+        this.selectedCategories.includes(asset.category);
+
+      const matchLocation = 
+        (!this.selectedCountry || asset.location.country === this.selectedCountry) &&
+        (!this.selectedCity || asset.location.city === this.selectedCity);
+
+      return matchCategory && matchLocation;
+    });
+
+    this.filteredAssets = this.showAllAssets ? filtered : filtered.slice(0, 2);
   }
 
   searchAssets(): void {
@@ -163,37 +178,22 @@ export class AssignAssetComponent implements OnInit {
 
   toggleSeeAssets(): void {
     this.showAllAssets = !this.showAllAssets;
-
-    const filtered = this.assets.filter(asset =>
-      asset.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-
-    this.filteredAssets = this.showAllAssets ? filtered : filtered.slice(0, 2);
-  }
-
-  applyFilters(): void {
-    const filtered = this.assets.filter(asset => {
-      const matchCategory =
-        this.selectedCategories.length === 0 ||
-        this.selectedCategories.includes(asset.category);
-
-      const matchLocation =
-        (!this.selectedCountry || asset.location.country === this.selectedCountry) &&
-        (!this.selectedCity || asset.location.city === this.selectedCity);
-
-      return matchCategory && matchLocation;
-    });
-
-    this.filteredAssets = this.showAllAssets ? filtered : filtered.slice(0, 2);
-  }
-
-  clearFilters(): void {
-    this.selectedCountry = '';
-    this.selectedCity = '';
-    this.selectedCategories = [];
-    this.applyFilters();
+    this.searchAssets(); // Reuse logic for consistency
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

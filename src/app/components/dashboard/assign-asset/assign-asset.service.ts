@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class AssignAssetService {
-  private apiUrl = 'https://q53mz.wiremockapi.cloud/assets';
+  private apiUrl = 'https://localhost:7091/api/v1/assets';
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class AssignAssetService {
   adminId: string;
   employeeId: string;
 }): Observable<any> {
-  const url = 'https://q53mz.wiremockapi.cloud/assignments';
+  const url = 'https://localhost:7091/api/v1/assignAsset';
 
   return this.http.post(url, payload, {
     headers: {
