@@ -19,7 +19,6 @@ export class AuthServiceService {
   microsoftToken = this.authConfig.token;
 
   url = environment.baseUrl;
-  wireUrl = environment.wireMockUrl;
 
   async handleRedirectLogin(): Promise<void> {
     try {
@@ -33,7 +32,7 @@ export class AuthServiceService {
         sessionStorage.setItem("Token", `${this.microsoftToken}`);
         this.setUser(this.microsoftAccount);
         this.setEmail(this.microsoftAccount);
-        // console.log(sessionStorage.getItem());
+
         this.login().subscribe({
           next: (res) => {
             console.log("Sent token successfully:", res);
