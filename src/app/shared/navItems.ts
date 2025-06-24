@@ -1,5 +1,5 @@
 import { INavMenu } from "./interfaces/NavMenu";
-import { navRoutes } from "../constants/navRoutes-contants";
+import { navRoutes } from "../constant-routes/nav-routes";
 export const navItems: INavMenu[] = [
   {
     id: 1,

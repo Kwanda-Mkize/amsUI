@@ -1,4 +1,4 @@
 export interface ILocation {
-  id: number;
-  city: string;
+  locationId: string;
+  locationCity: string;
 }

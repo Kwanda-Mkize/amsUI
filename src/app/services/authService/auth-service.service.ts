@@ -2,10 +2,10 @@ import { inject, Injectable } from "@angular/core";
 import { AccountInfo, AuthenticationResult } from "@azure/msal-browser";
 import { useAuth } from "../../auth.config";
 import { Router } from "@angular/router";
-import { ROUTES } from "../../constants/constant-routes";
+import { mainRoutes } from "../../constant-routes/main-routes";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment.development";
-import { Observable } from "rxjs";
+import { delay, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -17,6 +17,7 @@ export class AuthServiceService {
 
   microsoftAccount = this.authConfig.account;
   microsoftToken = this.authConfig.token;
+  scope = this.authConfig.scope;
 
   url = environment.baseUrl;
 
@@ -27,11 +28,16 @@ export class AuthServiceService {
 
       if (authenticated) {
         this.microsoftAccount = authenticated.account!;
-        this.microsoftToken = authenticated.accessToken;
+        this.microsoftToken =
+          await this.authConfig.msalInstance.acquireTokenSilent({
+            scopes: [this.scope],
+            account: this.microsoftAccount,
+          });
 
-        sessionStorage.setItem("Token", `${this.microsoftToken}`);
+        sessionStorage.setItem("Token", `${this.microsoftToken.accessToken}`);
         this.setUser(this.microsoftAccount);
         this.setEmail(this.microsoftAccount);
+        await delay(10);
 
         this.login().subscribe({
           next: (res) => {
@@ -42,7 +48,7 @@ export class AuthServiceService {
           },
         });
 
-        this.router.navigateByUrl(ROUTES.dashboard);
+        this.router.navigateByUrl(mainRoutes.dashboard);
       }
     } catch (error) {
       console.error("Authentication error:", error);
@@ -50,19 +56,21 @@ export class AuthServiceService {
   }
 
   loginRedirect(): void {
-    this.authConfig.msalInstance.loginRedirect();
+    this.authConfig.msalInstance.loginRedirect({
+      scopes: [this.scope],
+    });
   }
 
   login(): Observable<any> {
-    return this.http.post(`${this.url}/auth`, null);
+    return this.http.get(`${this.url}/auth`);
   }
 
   setUser(microsoftAccount: AccountInfo): void {
-    localStorage.setItem("userName", microsoftAccount.name ?? "");
+    localStorage.setItem("auth_username", microsoftAccount.name ?? "");
   }
 
   setEmail(microsoftAccount: AccountInfo): void {
-    localStorage.setItem("Email", microsoftAccount.username);
+    localStorage.setItem("auth_email", microsoftAccount.username);
   }
 
   logoutRedirect(): void {
