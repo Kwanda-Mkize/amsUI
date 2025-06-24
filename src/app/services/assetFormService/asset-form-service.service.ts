@@ -1,23 +1,23 @@
-import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Injectable } from "@angular/core";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AssetFormServiceService {
   constructor(private fb: FormBuilder) {}
 
   CreateAssetForm(): FormGroup {
     return this.fb.group({
-      category: ['', Validators.required],
-      location: ['', Validators.required],
-      brand: ['', Validators.required],
-      description: [''],
-      serialNumber: ['', Validators.required],
+      categoryId: ["", Validators.required],
+      locationId: ["", Validators.required],
+      brandId: ["", Validators.required],
+      description: [""],
+      serialNumber: ["", Validators.required],
       assetAttributes: this.fb.array([
         this.fb.group({
-          feature: ['', Validators.required],
-          value: ['', Validators.required],
+          featureId: ["", Validators.required],
+          value: ["", Validators.required],
         }),
       ]),
     });
@@ -26,8 +26,8 @@ export class AssetFormServiceService {
   addFeatureAttribute(assetAttributes: FormArray): void {
     assetAttributes.push(
       this.fb.group({
-        featureId: ['', Validators.required],
-        value: ['', Validators.required],
+        featureId: ["", Validators.required],
+        value: ["", Validators.required],
       })
     );
   }

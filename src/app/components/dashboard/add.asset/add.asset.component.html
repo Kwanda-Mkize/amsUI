@@ -1,5 +1,5 @@
 <form [formGroup]="AddAssetForm" (ngSubmit)="onSubmit()">
-  <img src="exaze-logo.jpg" class="logo" />
+  <!-- <img src="exaze-logo.jpg" class="logo" /> -->
   <div class="form-container mt-3 container-xxl">
     <div class="heading">
       <h2 class="heading-text m-0">Adding New Asset</h2>
@@ -8,8 +8,7 @@
 
     <div class="Category-container">
       <select
-        formControlName="category"
-        [formControl]="categoryControl"
+        formControlName="categoryId"
         class="form-field"
         [ngClass]="{
           'lg-error':
@@ -37,7 +36,7 @@
 
     <div class="Brand-container">
       <select
-        formControlName="brand"
+        formControlName="brandId"
         class="form-field"
         [ngClass]="{
           'lg-error':
@@ -64,7 +63,7 @@
 
     <div class="Location-container">
       <select
-        formControlName="location"
+        formControlName="locationId"
         class="form-field"
         [ngClass]="{
           'lg-error':
@@ -73,8 +72,8 @@
         }"
       >
         <option value="" disabled selected>Location</option>
-        <option *ngFor="let item of locationList" [value]="item.id">
-          {{ item.city }}
+        <option *ngFor="let item of locationList" [value]="item.locationId">
+          {{ item.locationCity }}
         </option>
       </select>
       <div
@@ -134,7 +133,7 @@
           class="feature-row"
         >
           <div class="feature-details">
-            <select formControlName="feature" class="feature-fields">
+            <select formControlName="featureId" class="feature-fields">
               <option value="" disabled selected>Feature</option>
               <option *ngFor="let item of featureList" [value]="item.featureId">
                 {{ item.featureKey }}

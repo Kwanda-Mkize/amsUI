@@ -1,15 +1,15 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ICategory } from '../../shared/interfaces/Icategory';
-import { IBrand } from '../../shared/interfaces/Ibrand';
-import { ILocation } from '../../shared/interfaces/Ilocation';
-import { IFeature } from '../../shared/interfaces/Ifeature';
-import { IAsset } from '../../shared/interfaces/IAssetData';
+import { inject, Injectable } from "@angular/core";
+import { environment } from "../../../environments/environment.development";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ICategory } from "../../shared/interfaces/Icategory";
+import { IBrand } from "../../shared/interfaces/Ibrand";
+import { ILocation } from "../../shared/interfaces/Ilocation";
+import { IFeature } from "../../shared/interfaces/Ifeature";
+import { IAsset } from "../../shared/interfaces/IAssetData";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AssetService {
   url = environment.baseUrl;
@@ -61,6 +61,6 @@ export class AssetService {
   }
 
   addNewAsset(assetData: IAsset[]): Observable<any> {
-    return this.http.post(`${this.url}/Asset`, assetData);
+    return this.http.post(`${this.url}/assets`, assetData);
   }
 }
