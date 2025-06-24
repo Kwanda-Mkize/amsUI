@@ -4,7 +4,7 @@ import { navItems } from "../../shared/navItems";
 import { INavMenu } from "../../shared/interfaces/NavMenu";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
-import { navRoutes } from "../../constants/navRoutes-contants";
+import { AuthServiceService } from "../../services/authService/auth-service.service";
 
 @Component({
   selector: "app-dashboard-side-nav",
@@ -15,17 +15,25 @@ import { navRoutes } from "../../constants/navRoutes-contants";
 })
 export class DashboardSideNavComponent implements OnInit {
   router = inject(Router);
+  authService = inject(AuthServiceService);
   navItemList: INavMenu[] = [];
+  name? = "";
+  email? = "";
+
   ngOnInit(): void {
     this.navItemList = navItems;
-    console.log(this.navItemList);
+    this.name = localStorage.getItem("userName") ?? undefined;
+    this.email = localStorage.getItem("Email") ?? undefined;
   }
 
   onNavChange(path: string): void {
     const navItemPath = path;
     if (navItemPath) {
-      console.log(navItemPath);
       this.router.navigateByUrl(navItemPath);
     }
+  }
+
+  logout() {
+    this.authService.logoutRedirect();
   }
 }

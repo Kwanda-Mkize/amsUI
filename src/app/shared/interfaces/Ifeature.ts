@@ -1,5 +1,5 @@
 export interface IFeature {
-  featureId: number;
+  featureId: string;
   featureKey: string;
 }
 

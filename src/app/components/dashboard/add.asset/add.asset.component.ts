@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from "@angular/core";
-// import { AssetService } from "../../services/assetService/asset.service";
 import { AssetService } from "../../../services/assetService/asset.service";
 import { CommonModule } from "@angular/common";
 import {
@@ -105,6 +104,8 @@ export class AddAssetComponent implements OnInit {
   onSubmit() {
     if (this.AddAssetForm.valid) {
       this.assetData = this.AddAssetForm.value;
+      console.log((this.assetData = this.AddAssetForm.value));
+
       this.service.addNewAsset(this.assetData).subscribe({
         next: (res) => {
           console.log("Asset added successfully:", res);

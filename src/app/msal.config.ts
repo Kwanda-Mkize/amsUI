@@ -12,7 +12,7 @@ export const msalInstance = new PublicClientApplication({
     redirectUri: "http://localhost:4200",
   },
   cache: {
-    cacheLocation: "localStorage",
+    cacheLocation: "sessionStorage",
     storeAuthStateInCookie: false,
   },
 });
@@ -20,13 +20,16 @@ export const msalInstance = new PublicClientApplication({
 export const msalGuardConfig: MsalGuardConfiguration = {
   interactionType: InteractionType.Redirect,
   authRequest: {
-    scopes: ["user.read"],
+    scopes: ["api://16684db4-e91f-44ac-87ab-42b6455b84cb/user.read"],
   },
 };
 
 export const msalInterceptorConfig: MsalInterceptorConfiguration = {
   interactionType: InteractionType.Redirect,
   protectedResourceMap: new Map([
-    ["https://graph.microsoft.com/v1.0/me", ["user.read"]],
+    [
+      "https://localhost:7091/api",
+      ["api://16684db4-e91f-44ac-87ab-42b6455b84cb/user.read"],
+    ],
   ]),
 };

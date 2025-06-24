@@ -1,53 +1,54 @@
 import { inject, Injectable } from "@angular/core";
 import { AccountInfo, AuthenticationResult } from "@azure/msal-browser";
-import { BehaviorSubject } from "rxjs";
 import { useAuth } from "../../auth.config";
 import { Router } from "@angular/router";
-import { ROUTES } from "../../constants/constant-routes";
+import { mainRoutes } from "../../constant-routes/main-routes";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environments/environment.development";
+import { delay, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthServiceService {
-  // constructor() { }
-
   private router = inject(Router);
-  // private http = inject(HttpClient);
   private readonly authConfig = useAuth();
-  // private readonly url = environment.apiUrl;
+  http = inject(HttpClient);
 
-  private user = new BehaviorSubject<string>("");
-  user$ = this.user.asObservable();
+  microsoftAccount = this.authConfig.account;
+  microsoftToken = this.authConfig.token;
+  scope = this.authConfig.scope;
 
-  private email = new BehaviorSubject<string>("");
-  email$ = this.email.asObservable();
-
-  // private invalidStatus = new BehaviorSubject<boolean>(false);
-  // invalidStatus$ = this.invalidStatus.asObservable();
-
-  token: string | null = null;
-  account: AccountInfo | null = null;
-
-  constructor() {
-    // const storedUser = localStorage.getItem('userName');
-    // const storedEmail = localStorage.getItem('Email');
-    // if (storedUser) this.user.next(storedUser);
-    // if (storedEmail) this.email.next(storedEmail);
-  }
+  url = environment.baseUrl;
 
   async handleRedirectLogin(): Promise<void> {
     try {
-      const result: AuthenticationResult | null =
+      const authenticated: AuthenticationResult | null =
         await this.authConfig.msalInstance.handleRedirectPromise();
 
-      if (result) {
-        this.account = result.account!;
-        this.token = result.accessToken;
-        console.log(this.token);
-        this.setUser(this.account);
-        this.setEmail(this.account);
+      if (authenticated) {
+        this.microsoftAccount = authenticated.account!;
+        this.microsoftToken =
+          await this.authConfig.msalInstance.acquireTokenSilent({
+            scopes: [this.scope],
+            account: this.microsoftAccount,
+          });
 
-        this.router.navigateByUrl(ROUTES.dashboard);
+        sessionStorage.setItem("Token", `${this.microsoftToken.accessToken}`);
+        this.setUser(this.microsoftAccount);
+        this.setEmail(this.microsoftAccount);
+        await delay(10);
+
+        this.login().subscribe({
+          next: (res) => {
+            console.log("Sent token successfully:", res);
+          },
+          error: (err) => {
+            console.error("Failed send headers with token:", err);
+          },
+        });
+
+        this.router.navigateByUrl(mainRoutes.dashboard);
       }
     } catch (error) {
       console.error("Authentication error:", error);
@@ -55,29 +56,27 @@ export class AuthServiceService {
   }
 
   loginRedirect(): void {
-    this.authConfig.msalInstance.loginRedirect();
-  }
-
-  logoutRedirect() {
-    this.authConfig.msalInstance.logoutRedirect({
-      postLogoutRedirectUri: window.location.origin,
+    this.authConfig.msalInstance.loginRedirect({
+      scopes: [this.scope],
     });
   }
 
-  logoutUser(): void {
+  login(): Observable<any> {
+    return this.http.get(`${this.url}/auth`);
+  }
+
+  setUser(microsoftAccount: AccountInfo): void {
+    localStorage.setItem("auth_username", microsoftAccount.name ?? "");
+  }
+
+  setEmail(microsoftAccount: AccountInfo): void {
+    localStorage.setItem("auth_email", microsoftAccount.username);
+  }
+
+  logoutRedirect(): void {
     localStorage.clear();
-    this.user.next("");
-    this.email.next("");
-    this.authConfig.msalInstance.logoutRedirect();
-  }
-
-  setUser(user: AccountInfo): void {
-    // this.user.next(user.name ?? '');
-    localStorage.setItem("userName", user.name ?? "");
-  }
-
-  setEmail(user: AccountInfo): void {
-    // this.email.next(user.username);
-    localStorage.setItem("Email", user.username);
+    this.authConfig.msalInstance.logoutRedirect({
+      postLogoutRedirectUri: window.location.origin,
+    });
   }
 }
