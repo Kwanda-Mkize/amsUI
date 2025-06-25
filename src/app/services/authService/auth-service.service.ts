@@ -1,35 +1,35 @@
 import { inject, Injectable } from "@angular/core";
 import { AccountInfo, AuthenticationResult } from "@azure/msal-browser";
-import { useAuthEnvirnment } from "../../auth-environment";
+import { useAuthState } from "../../auth.state";
 import { Router } from "@angular/router";
 import { mainRoutes } from "../../constant-routes/main-routes";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment.development";
-import { delay, Observable } from "rxjs";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthServiceService {
   private router = inject(Router);
-  private readonly authEnvironment = useAuthEnvirnment();
+  private readonly authState = useAuthState();
   http = inject(HttpClient);
 
-  microsoftAccount = this.authEnvironment.account;
-  microsoftToken = this.authEnvironment.token;
-  scope = this.authEnvironment.scope;
+  microsoftAccount = this.authState.account;
+  microsoftToken = this.authState.token;
+  scope = this.authState.scope;
 
   url = environment.baseUrl;
 
   async handleRedirectLogin(): Promise<void> {
     try {
       const authenticated: AuthenticationResult | null =
-        await this.authEnvironment.msalInstance.handleRedirectPromise();
+        await this.authState.msalInstance.handleRedirectPromise();
 
       if (authenticated) {
         this.microsoftAccount = authenticated.account!;
         this.microsoftToken =
-          await this.authEnvironment.msalInstance.acquireTokenSilent({
+          await this.authState.msalInstance.acquireTokenSilent({
             scopes: [this.scope],
             account: this.microsoftAccount,
           });
@@ -37,7 +37,6 @@ export class AuthServiceService {
         this.setToken(this.microsoftToken);
         this.setUser(this.microsoftAccount);
         this.setEmail(this.microsoftAccount);
-        await delay(10);
 
         this.login().subscribe({
           next: (res) => {
@@ -55,12 +54,6 @@ export class AuthServiceService {
     }
   }
 
-  loginRedirect(): void {
-    this.authEnvironment.msalInstance.loginRedirect({
-      scopes: [this.scope],
-    });
-  }
-
   login(): Observable<any> {
     return this.http.get(`${this.url}/Employees/validate`);
   }
@@ -76,9 +69,15 @@ export class AuthServiceService {
     localStorage.setItem("auth_email", microsoftAccount.username);
   }
 
+  loginRedirect(): void {
+    this.authState.msalInstance.loginRedirect({
+      scopes: [this.scope],
+    });
+  }
+
   logoutRedirect(): void {
     localStorage.clear();
-    this.authEnvironment.msalInstance.logoutRedirect({
+    this.authState.msalInstance.logoutRedirect({
       postLogoutRedirectUri: window.location.origin,
     });
   }
