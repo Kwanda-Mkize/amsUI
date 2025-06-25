@@ -1,6 +1,6 @@
 export const navRoutes = {
   manageAssets: "/manageAssets",
-  assignAssets: "/assignAssets",
+  assignAssets: "/assign-assets",
   viewRequests: "/requests",
   repairRequests: "/repair",
 };
