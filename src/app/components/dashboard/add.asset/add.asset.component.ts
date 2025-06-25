@@ -40,7 +40,6 @@ export class AddAssetComponent implements OnInit {
   service = inject(AssetService);
   formService = inject(AssetFormServiceService);
 
-  categoryControl = new FormControl("");
   ngOnInit(): void {
     this.AddAssetForm = this.formService.CreateAssetForm();
 

@@ -22,8 +22,8 @@ export class DashboardSideNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.navItemList = navItems;
-    this.name = localStorage.getItem("userName") ?? undefined;
-    this.email = localStorage.getItem("Email") ?? undefined;
+    this.name = localStorage.getItem("auth_username") ?? undefined;
+    this.email = localStorage.getItem("auth_email") ?? undefined;
   }
 
   onNavChange(path: string): void {

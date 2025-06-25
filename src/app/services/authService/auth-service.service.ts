@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { AccountInfo, AuthenticationResult } from "@azure/msal-browser";
-import { useAuth } from "../../auth.config";
+import { useAuthEnvirnment } from "../../auth-environment";
 import { Router } from "@angular/router";
 import { mainRoutes } from "../../constant-routes/main-routes";
 import { HttpClient } from "@angular/common/http";
@@ -12,39 +12,39 @@ import { delay, Observable } from "rxjs";
 })
 export class AuthServiceService {
   private router = inject(Router);
-  private readonly authConfig = useAuth();
+  private readonly authEnvironment = useAuthEnvirnment();
   http = inject(HttpClient);
 
-  microsoftAccount = this.authConfig.account;
-  microsoftToken = this.authConfig.token;
-  scope = this.authConfig.scope;
+  microsoftAccount = this.authEnvironment.account;
+  microsoftToken = this.authEnvironment.token;
+  scope = this.authEnvironment.scope;
 
   url = environment.baseUrl;
 
   async handleRedirectLogin(): Promise<void> {
     try {
       const authenticated: AuthenticationResult | null =
-        await this.authConfig.msalInstance.handleRedirectPromise();
+        await this.authEnvironment.msalInstance.handleRedirectPromise();
 
       if (authenticated) {
         this.microsoftAccount = authenticated.account!;
         this.microsoftToken =
-          await this.authConfig.msalInstance.acquireTokenSilent({
+          await this.authEnvironment.msalInstance.acquireTokenSilent({
             scopes: [this.scope],
             account: this.microsoftAccount,
           });
 
-        sessionStorage.setItem("Token", `${this.microsoftToken.accessToken}`);
+        this.setToken(this.microsoftToken);
         this.setUser(this.microsoftAccount);
         this.setEmail(this.microsoftAccount);
         await delay(10);
 
         this.login().subscribe({
           next: (res) => {
-            console.log("Sent token successfully:", res);
+            console.log(res);
           },
           error: (err) => {
-            console.error("Failed send headers with token:", err);
+            console.error(err);
           },
         });
 
@@ -56,15 +56,18 @@ export class AuthServiceService {
   }
 
   loginRedirect(): void {
-    this.authConfig.msalInstance.loginRedirect({
+    this.authEnvironment.msalInstance.loginRedirect({
       scopes: [this.scope],
     });
   }
 
   login(): Observable<any> {
-    return this.http.get(`${this.url}/auth`);
+    return this.http.get(`${this.url}/Employees/validate`);
   }
 
+  setToken(microsoftToken: any) {
+    sessionStorage.setItem("Token", `${microsoftToken.accessToken}`);
+  }
   setUser(microsoftAccount: AccountInfo): void {
     localStorage.setItem("auth_username", microsoftAccount.name ?? "");
   }
@@ -75,7 +78,7 @@ export class AuthServiceService {
 
   logoutRedirect(): void {
     localStorage.clear();
-    this.authConfig.msalInstance.logoutRedirect({
+    this.authEnvironment.msalInstance.logoutRedirect({
       postLogoutRedirectUri: window.location.origin,
     });
   }

@@ -10,7 +10,7 @@ export const AuthInterceptorService: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
-  let accessToken: string | null = null;
+  let accessToken;
 
   try {
     accessToken = sessionStorage.getItem("Token");
@@ -24,6 +24,7 @@ export const AuthInterceptorService: HttpInterceptorFn = (
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
     console.log(clonedRequest.headers);
     return next(clonedRequest);
   }

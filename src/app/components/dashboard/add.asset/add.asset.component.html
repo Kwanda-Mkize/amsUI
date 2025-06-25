@@ -12,8 +12,8 @@
         class="form-field"
         [ngClass]="{
           'lg-error':
-            AddAssetForm.get('category')?.invalid &&
-            AddAssetForm.get('category')?.touched
+            AddAssetForm.get('categoryId')?.invalid &&
+            AddAssetForm.get('categoryId')?.touched
         }"
         (change)="onCategoryChange($event)"
       >
@@ -24,9 +24,9 @@
       </select>
       <div
         *ngIf="
-          AddAssetForm.get('category')?.touched &&
-          AddAssetForm.get('category')?.invalid &&
-          AddAssetForm.get('category')?.errors
+          AddAssetForm.get('categoryId')?.touched &&
+          AddAssetForm.get('categoryId')?.invalid &&
+          AddAssetForm.get('categoryId')?.errors
         "
         class="lg-errror-msg"
       >
@@ -40,8 +40,8 @@
         class="form-field"
         [ngClass]="{
           'lg-error':
-            AddAssetForm.get('brand')?.invalid &&
-            AddAssetForm.get('brand')?.touched
+            AddAssetForm.get('brandId')?.invalid &&
+            AddAssetForm.get('brandId')?.touched
         }"
       >
         <option value="" disabled selected>Brand</option>
@@ -51,9 +51,9 @@
       </select>
       <div
         *ngIf="
-          AddAssetForm.get('brand')?.touched &&
-          AddAssetForm.get('brand')?.invalid &&
-          AddAssetForm.get('brand')?.errors
+          AddAssetForm.get('brandId')?.touched &&
+          AddAssetForm.get('brandId')?.invalid &&
+          AddAssetForm.get('brandId')?.errors
         "
         class="lg-errror-msg"
       >
@@ -67,8 +67,8 @@
         class="form-field"
         [ngClass]="{
           'lg-error':
-            AddAssetForm.get('location')?.invalid &&
-            AddAssetForm.get('location')?.touched
+            AddAssetForm.get('locationId')?.invalid &&
+            AddAssetForm.get('locationId')?.touched
         }"
       >
         <option value="" disabled selected>Location</option>
@@ -78,9 +78,9 @@
       </select>
       <div
         *ngIf="
-          AddAssetForm.get('location')?.touched &&
-          AddAssetForm.get('location')?.invalid &&
-          AddAssetForm.get('location')?.errors
+          AddAssetForm.get('locationId')?.touched &&
+          AddAssetForm.get('locationId')?.invalid &&
+          AddAssetForm.get('locationId')?.errors
         "
         class="lg-errror-msg"
       >
@@ -123,22 +123,29 @@
 
     <div formArrayName="assetAttributes" class="feature-information">
       <button type="button" class="add-feature-btn" (click)="onAddFeature()">
-        <img src="add.png" alt="" class="feature-img" />
+        <img src="icons/add.png" alt="" class="feature-img" />
         Add Feature
       </button>
       <div class="feature-block">
         <div
-          *ngFor="let group of assetAttributes.controls; let i = index"
-          [formGroupName]="i"
+          *ngFor="
+            let formGroup of assetAttributes.controls;
+            let currentFeature = index
+          "
+          [formGroupName]="currentFeature"
           class="feature-row"
         >
           <div class="feature-details">
             <select formControlName="featureId" class="feature-fields">
               <option value="" disabled selected>Feature</option>
-              <option *ngFor="let item of featureList" [value]="item.featureId">
-                {{ item.featureKey }}
+              <option
+                *ngFor="let featurItem of featureList"
+                [value]="featurItem.featureId"
+              >
+                {{ featurItem.featureKey }}
               </option>
             </select>
+
             @if(istoggleOn){
             <input
               formControlName="value"
@@ -161,9 +168,9 @@
             <button
               type="button"
               class="remove-feature-btn"
-              (click)="onRemoveFeature(i)"
+              (click)="onRemoveFeature(currentFeature)"
             >
-              <img src="remove.png" class="feature-img" alt="" />
+              <img src="icons/remove.png" class="feature-img" alt="" />
             </button>
           </div>
         </div>
