@@ -1,5 +1,5 @@
 import { environment } from "../environments/environment.development";
-import { PublicClientApplication, InteractionType } from "@azure/msal-browser";
+import { PublicClientApplication } from "@azure/msal-browser";
 
 export const msalInstance = new PublicClientApplication({
   auth: {
