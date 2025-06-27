@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { ICategory } from "../../shared/interfaces/Icategory";
 import { IBrand } from "../../shared/interfaces/Ibrand";
-import { ILocation } from "../../shared/interfaces/Ilocation";
+import { ILocation } from "../../shared/interfaces/ILocation";
 import { IFeature } from "../../shared/interfaces/Ifeature";
 import { IAsset } from "../../shared/interfaces/IAssetData";
 

@@ -1,4 +1,5 @@
 export interface IAsset {
+  assetId: string;
   categoryId: string;
   locationId: string;
   brandId: string;
@@ -12,16 +13,18 @@ export interface IAsset {
   ];
 }
 
-interface IAsset_ALT {
-  categoryId: string;
-  locationId: string;
-  brandId: string;
-  description: string;
-  serialNumber: string;
-  assetAttributes: [
-    {
-      featureId: string;
-      featureValueId: string;
-    }
-  ];
-}
+
+
+// interface IAsset_ALT {
+//   categoryId: string;
+//   locationId: string;
+//   brandId: string;
+//   description: string;
+//   serialNumber: string;
+//   assetAttributes: [
+//     {
+//       featureId: string;
+//       featureValueId: string;
+//     }
+//   ];
+// }

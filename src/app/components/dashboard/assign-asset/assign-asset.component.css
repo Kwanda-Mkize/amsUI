@@ -12,16 +12,17 @@
 }
 
 .modal-overlay {
-  position: fixed;
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 115vw;
   height: 100vh;
   background: white;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1100;
+  overflow: hidden;
 }
 
 .modal-box {
@@ -29,12 +30,13 @@
   padding: 2.5rem;          
   border-radius: 0.75rem;
   box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.1); 
-  max-width: 38rem;       
-  max-height: 19rem;
+  max-width: 40rem;       
+  max-height: 20rem;
   text-align: center;
 }
 
 .container {
+  position: relative;
   max-width: 66rem;
   margin: auto;
   padding: 1rem 2rem;
@@ -42,6 +44,8 @@
   border-radius: 1rem;
   min-height: 58rem;
   transition: filter 0.3s ease;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .assign-heading {
@@ -158,7 +162,7 @@
 }
 
 .section-title {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 700;
   display: block;
 }

@@ -100,22 +100,17 @@
         placeholder="Search asset by name"
       />
       <button class="search-icon-btn" (click)="searchAssets()" aria-label="Search">
-        <img src="searchIconForSearchBar.png" alt="SearchIcon" width="22px" height="22px" />
+        <img src="assign-asset-icons/SearchIconForSearchBar.png" alt="SearchIcon" width="22px" height="22px" />
       </button>
     </div>
     <button class="filter-btn" (click)="toggleFilter()" aria-label="Toggle filter">
-      <img src="filterAssignAssets.png" alt="Filter" width="20" height="20" />
+      <img src="assign-asset-icons/filter.png" alt="Filter" width="20" height="20" />
     </button>
   </div>
 
   <ng-container *ngIf="showFilter && !isProcessing && !showSuccessModal && !showErrorModal">
     <div class="filter-overlay" (click)="toggleFilter()"></div>
     <div class="filter-slideout show">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="m-0">Filter Assets</h5>
-        <button class="btn btn-sm btn-outline-secondary" (click)="toggleFilter()">✕</button>
-      </div>
-
       <strong class="section-title mb-2">ASSET CATEGORY</strong>
       <div class="form-check d-flex align-items-center mb-2" *ngFor="let cat of assetCategories">
         <input
@@ -131,54 +126,66 @@
         <strong class="section-title">LOCATION</strong>
 
         <label class="label-small">Country/Region</label>
-        <select class="form-select" [(ngModel)]="selectedCountry" (change)="onCountryChange()">
+        <select class="form-select" [(ngModel)]="filterCountry" (change)="onCountryChange()">
           <option value="">Select Country</option>
           <option *ngFor="let country of countries">{{ country }}</option>
         </select>
 
         <label class="label-small mt-3">City</label>
-        <select class="form-select" [(ngModel)]="selectedCity">
+        <select class="form-select" [(ngModel)]="filterCity" [disabled]="!filterCountry">
           <option value="">Select City</option>
           <option *ngFor="let city of citiesByCountry[selectedCountry]">{{ city }}</option>
         </select>
       </div>
 
-      <button class="apply-btn mt-4" (click)="applyFilters()">Apply Filters</button>
+      <button class="apply-btn mt-4 mb-2" (click)="applyFilters()">Apply Filters</button>
       <button class="clear-btn mt-2" (click)="clearFilters()">Clear Filters</button>
     </div>
   </ng-container>
 
-  <div style="width: 1007px; border-radius: 10px;" class="border p-3 mb-1">
+  <div style="width: 996px; border-radius: 10px;" class="border p-3 mb-1">
     <strong class="mb-4 section-title">Available Assets</strong>
 
     <div *ngIf="filteredAssets.length > 0" class="d-flex flex-column align-items-center">
-      <div
-        *ngFor="let asset of filteredAssets"
-        (click)="selectAsset(asset.id)"
-        class="card p-3 mb-4 asset-card"
-        [ngClass]="{ 'asset-card--selected': selectedAssetId === asset.id.toString()}"
-        role="button"
-        tabindex="0"
-      >
-        <strong class="mb-3">{{ asset.name }}</strong>
-        <p class="mb-0 text-muted">RAM: {{ asset.ram }}</p>
-        <p class="mb-0 text-muted">Processor: {{ asset.processor }}</p>
-        <p class="mb-0 text-muted">Hard Drive: {{ asset.hardDrive }}</p>
-      </div>
+  <div
+    *ngFor="let asset of filteredAssets"
+    (click)="selectAsset(asset.assetId)"
+    class="card p-3 mb-4 asset-card"
+    [ngClass]="{ 'asset-card--selected': selectedAssetId === asset.assetId }"
+    role="button"
+    tabindex="0"
+  >
+    <strong class="mb-2">{{ asset.description }}</strong>
+    <p class="mb-0 text-muted">Category: {{ categoryMap[asset.categoryId] || asset.categoryId }}</p>
+    <p class="mb-0 text-muted">Brand: {{ brandMap[asset.brandId] || asset.brandId }}</p>
+    <p class="mb-0 text-muted">Serial Number: {{ asset.serialNumber }}</p>
 
-      <div class="d-flex justify-content-center mt-1">
-        <button
-          class="btn btn-link p-0"
-          style="color: #3B883E; text-decoration: underline;"
-          (click)="toggleSeeAssets()"
-          type="button"
-        >
-          {{ showAllAssets ? 'See less assets' : 'See all assets' }}
-        </button>
-      </div>
+    <div *ngIf="asset.assetAttributes?.length && asset.assetAttributes.length > 0" class="mt-2">
+      <strong>Features</strong>
+      <ul class="mb-0">
+        <li *ngFor="let attr of asset.assetAttributes">
+          {{ attr.featureId }}: {{ attr.value }}
+        </li>
+      </ul>
     </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-1">
+    <button
+      class="btn btn-link p-0"
+      style="color: #3B883E; text-decoration: underline;"
+      (click)="toggleSeeAssets()"
+      type="button"
+    >
+      {{ showAllAssets ? 'See less assets' : 'See all assets' }}
+    </button>
+  </div>
+</div>
+
+
+    
 <div *ngIf="filteredAssets.length === 0" class="d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 300px;">
-      <img src="NoAssetsIcon.png" alt="No assets icon" width="75" class="mb-3" />
+      <img src="assign-asset-icons/NoAssetsIcon.png" alt="No assets icon" width="75" class="mb-3" />
       <strong class="text-muted mb-1">No assets available.</strong>
       <p class="text-muted small">Please check later or contact support.</p>
     </div>

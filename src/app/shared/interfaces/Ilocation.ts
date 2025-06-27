@@ -1,4 +1,5 @@
 export interface ILocation {
   locationId: string;
-  locationCity: string;
+  locationCountry: string;
+  locationCity: string[];
 }

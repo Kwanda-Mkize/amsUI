@@ -11,7 +11,7 @@ import {
 import { Observable, Subject, takeUntil } from "rxjs";
 
 import { ICategory } from "../../../shared/interfaces/Icategory";
-import { ILocation } from "../../../shared/interfaces/Ilocation";
+import { ILocation } from "../../../shared/interfaces/ILocation";
 import { IBrand } from "../../../shared/interfaces/Ibrand";
 import { IFeature, IFeature_ALT } from "../../../shared/interfaces/Ifeature";
 import { AssetFormServiceService } from "../../../services/assetFormService/asset-form-service.service";
