@@ -1,0 +1,46 @@
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Assets</th>
+        <th>Serial Number</th>
+        <th>Assigned To</th>
+        <th>Assigned By</th>
+        <th>Date Assigned</th>
+        <th>City</th>
+        <th>Linked Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of requestedAssets">
+        <td>{{ item.asset }}</td>
+        <td>{{ item.serialNumber }}</td>
+        <td>{{ item.assignedTo }}</td>
+        <td>{{ item.assignedBy }}</td>
+        <td>{{ item.dateAssigned }}</td>
+        <td>{{ item.city }}</td>
+        <td>{{ item.linkedStatus }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-pagination">
+    <div class="left">Total Assets: <strong>145</strong></div>
+    <div class="center-pagination">
+      <button>&laquo;</button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
+      <button>5</button>
+      <button>&raquo;</button>
+    </div>
+    <div class="right">
+      Show per Page:
+      <select>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+      </select>
+    </div>
+  </div>
+</div>

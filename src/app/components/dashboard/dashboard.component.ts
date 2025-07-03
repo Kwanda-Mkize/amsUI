@@ -3,11 +3,17 @@ import { DashboardSideNavComponent } from "../dashboard-side.nav/dashboard-side-
 import { MatSidenavModule } from "@angular/material/sidenav";
 
 import { RouterOutlet } from "@angular/router";
+import { ManageRequestsComponent } from "./manage-requests/manage-requests.component";
 
 @Component({
   selector: "app-dashboard",
   standalone: true,
-  imports: [RouterOutlet, DashboardSideNavComponent, MatSidenavModule],
+  imports: [
+    RouterOutlet,
+    DashboardSideNavComponent,
+    MatSidenavModule,
+    ManageRequestsComponent,
+  ],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.css",
 })
