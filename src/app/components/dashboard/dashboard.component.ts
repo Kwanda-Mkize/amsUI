@@ -3,7 +3,7 @@ import { DashboardSideNavComponent } from "../dashboard-side.nav/dashboard-side-
 import { MatSidenavModule } from "@angular/material/sidenav";
 
 import { RouterOutlet } from "@angular/router";
-import { ManageRequestsComponent } from "./manage-requests/manage-requests.component";
+import { assignedAssetsComponent } from "./assignedAssets/assignedAssets.component";
 
 @Component({
   selector: "app-dashboard",
@@ -12,7 +12,7 @@ import { ManageRequestsComponent } from "./manage-requests/manage-requests.compo
     RouterOutlet,
     DashboardSideNavComponent,
     MatSidenavModule,
-    ManageRequestsComponent,
+    assignedAssetsComponent,
   ],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.css",
