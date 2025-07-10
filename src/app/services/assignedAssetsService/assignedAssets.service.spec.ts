@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { AssetRequestService } from './asset-request.service';
+import { AssetRequestService } from "./assignedAssets.service";
 
-describe('AssetRequestService', () => {
+describe("AssetRequestService", () => {
   let service: AssetRequestService;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('AssetRequestService', () => {
     service = TestBed.inject(AssetRequestService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

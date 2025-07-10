@@ -14,7 +14,7 @@ export class AssetRequestService {
   private requestedAssetList = new BehaviorSubject<IAssetRequest[]>([]);
   requestedAssetList$ = this.requestedAssetList.asObservable();
 
-  getAllRequests() {
+  getAllAssignedAssets() {
     this.http.get<IAssetRequest[]>(`${this.url}requests`).subscribe({
       next: (res) => {
         this.requestedAssetList.next(res);
