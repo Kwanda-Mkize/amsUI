@@ -103,6 +103,21 @@
   margin: 0;
   height: 5rem;
   padding: 0.5rem;
-  background-color: #d5d8d6;
+  background-color: #3b883e;
   border-radius: 100%;
+}
+
+.profile-initails-container {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 100%;
+  background-color: #3b883e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-initails {
+  font-size: x-large;
+  color: white;
+  font-weight: 500;
 }

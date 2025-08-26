@@ -1,14 +1,18 @@
-import { Component } from "@angular/core";
-import { DashboardSideNavComponent } from "../dashboard-side.nav/dashboard-side-nav.component";
+import { Component, OnInit } from "@angular/core";
 import { MatSidenavModule } from "@angular/material/sidenav";
 
 import { RouterOutlet } from "@angular/router";
+import { SideNavMenuComponent } from "../side-nav-menu/side-nav-menu.component";
 
 @Component({
   selector: "app-dashboard",
   standalone: true,
-  imports: [RouterOutlet, DashboardSideNavComponent, MatSidenavModule],
+  imports: [RouterOutlet, SideNavMenuComponent, MatSidenavModule],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.css",
 })
-export class DashboardComponent {}
+export class DashboardComponent implements OnInit {
+  ngOnInit(): void {
+    throw new Error("Method not implemented.");
+  }
+}

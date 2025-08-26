@@ -18,8 +18,8 @@
         (change)="onCategoryChange($event)"
       >
         <option value="" disabled selected>Category</option>
-        <option *ngFor="let item of categoryList" [value]="item.categoryId">
-          {{ item.categoryName }}
+        <option *ngFor="let item of categoryList" [value]="item.CategoryId">
+          {{ item.CategoryName }}
         </option>
       </select>
       <div

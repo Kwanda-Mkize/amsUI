@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core";
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  provideZoneChangeDetection,
+} from "@angular/core";
 import { provideRouter } from "@angular/router";
 
 import { routes } from "./app.routes";
@@ -7,6 +11,7 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 import { MsalBroadcastService } from "@azure/msal-angular";
 
 import { AuthInterceptorService } from "./services/interceptor/auth-interceptor.service";
+import { AuthServiceService } from "./services/authService/auth-service.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([AuthInterceptorService])),
     provideAnimationsAsync(),
     MsalBroadcastService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (auth: AuthServiceService) => () => auth.restoreAuthState(),
+      deps: [AuthServiceService],
+      multi: true,
+    },
   ],
 };

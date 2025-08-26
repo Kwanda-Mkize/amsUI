@@ -2,14 +2,12 @@
   <div class="top-section">
     <img class="logo" src="exaze-logo.jpg" alt="" />
     <div class="profile-container">
-      <img
-        src="/icons/fluent--person-32-filled.png"
-        class="profile-icon profile-img-icon"
-        alt=""
-      />
+      <div class="profile-initails-container">
+        <span class="profile-initails">{{ Initials }}</span>
+      </div>
 
       <div class="profile-creds">
-        <p class="employee-name">{{ name }}</p>
+        <p class="employee-name">{{ userName }}</p>
         <p class="employee-email">{{ email }}</p>
       </div>
     </div>
@@ -24,10 +22,10 @@
       <li *ngFor="let item of navItemList">
         <button
           class="d-flex align-items-center gap-2 nav-button"
-          (click)="onNavChange(item.routePath)"
+          (click)="onNavChange(item.url)"
         >
-          <img src="{{ item.icon }}" alt="" />
-          {{ item.item }}
+          <img src="{{ item.iconUrl }}" alt="" />
+          {{ item.name }}
         </button>
       </li>
     </ul>
